@@ -3,12 +3,11 @@
 site_name: jaimesendraberenguer
 site_url: https://jaisenbe58r.github.io/jaimesendraberenguer/
 site_author: Jaime Sendra Berenguer
-site_description: A library consisting of useful tools and extensions for the day-to-day data science tasks.
-
+site_description: Blog - Potfolio
 
 repo_url: https://github.com/jaisenbe58r/jaimesendraberenguer
 repo_name: GitHub
-edit_uri: docs/
+edit_uri: docs/sources/user_guide/
 
 theme:
     name: null
