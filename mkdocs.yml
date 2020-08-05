@@ -7,7 +7,7 @@ site_description: Blog - Potfolio
 
 repo_url: https://github.com/jaisenbe58r/jaimesendraberenguer
 repo_name: GitHub
-edit_uri: docs/
+# edit_uri: docs/
 
 # theme:
 #     name: null
