@@ -7,11 +7,15 @@ site_description: Blog - Potfolio
 
 repo_url: https://github.com/jaisenbe58r/jaimesendraberenguer
 repo_name: GitHub
-edit_uri: docs/sources/user_guide/
+edit_uri: docs/
 
 theme:
     name: null
     custom_dir: 'custom_theme/'
+
+#include_search: true # not necessary for this theme
+docs_dir: docs/
+
 
 markdown_extensions:
   - tables
