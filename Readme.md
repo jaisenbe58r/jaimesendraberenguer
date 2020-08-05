@@ -1,4 +1,2 @@
-## Deploying my docs
-
-- Autor: Jaime Sendra Berenguer
-
+# Deploying my docs
+#### Autor: Jaime Sendra Berenguer

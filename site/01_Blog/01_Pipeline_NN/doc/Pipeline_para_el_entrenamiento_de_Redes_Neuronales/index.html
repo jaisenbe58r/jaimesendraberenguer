@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A library consisting of useful tools and extensions for the day-to-day data science tasks."> 
+    <meta name="author" content="Jaime Sendra Berenguer"> 
+    <link rel="canonical" href="https://jaisenbe58r.github.io/jaimesendraberenguer/01_Blog/01_Pipeline_NN/doc/Pipeline_para_el_entrenamiento_de_Redes_Neuronales/">
+    <link rel="shortcut icon" href="../../../../img/favicon.ico">
+
+    <title>Pipeline para el entrenamiento de Redes Neuronales - jaimesendraberenguer</title>
+
+    <link href="../../../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../../../css/base.css" rel="stylesheet">
+    <link href="../../../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../css/highlight.css">
+
+
+    <link href="../../../../cinder/css/base.css" rel="stylesheet">
+
+
+    <link href="../../../../cinder/css/bootstrap-custom.css" rel="stylesheet">
+
+
+    <link href="../../../../cinder/css/bootstrap-custom.min.css" rel="stylesheet">
+
+
+    <link href="../../../../cinder/css/cinder.css" rel="stylesheet">
+
+
+    <link href="../../../../cinder/css/font-awesome-4.0.3.css" rel="stylesheet">
+
+
+    <link href="../../../../cinder/css/highlight.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            <a class="navbar-brand" href="../../../..">jaimesendraberenguer</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../../../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Portfolio <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../../../02_Portfolio/example/">Example</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blog <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">Pipeline para el entrenamiento de Redes Neuronales</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../02_AI_Industria/doc/AI_Industria/">Inteligencia Artificial Aplicada a la Industria</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../../../about/">About</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../../../license/">License</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fa fa-search"></i> Search
+                        </a>
+                    </li>
+
+                <!--
+                    <li >
+                        <a rel="next" href="../../../../02_Portfolio/example/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../../../02_AI_Industria/doc/AI_Industria/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>-->
+                    <li>
+                        <a href="https://github.com/jaisenbe58r/MLearner"><i class="fa fa-github"></i> GitHub</a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#pipeline-para-el-entrenamiento-de-redes-neuronales">Pipeline para el entrenamiento de Redes Neuronales</a></li>
+            <li class="second-level"><a href="#analisis-y-limpieza-de-los-datos">Análisis y limpieza de los Datos</a></li>
+                 <!-- 
+                <li class="third-level"><a href="#descarga-del-dataset-de-ejemplo">Descarga del dataset de ejemplo:</a></li>
+                <li class="third-level"><a href="#filtrado-de-imagenes-corruptas">Filtrado de imagenes corruptas</a></li>
+                <li class="third-level"><a href="#resumen-de-los-datos-del-dataset">Resumen de los Datos del dataset</a></li>
+                <li class="third-level"><a href="#generacion-del-dataset">Generación del Dataset</a></li>
+                <li class="third-level"><a href="#visualizacion-de-los-datos">Visualización de los datos</a></li>  -->
+            <li class="second-level"><a href="#configuracion-de-la-arquitectura-end-to-end">Configuración de la arquitectura end-to-end.</a></li>
+                 <!-- 
+                <li class="third-level"><a href="#generacion-red-convolucional-simple">Generación red convolucional simple</a></li>
+                <li class="third-level"><a href="#funcion-de-entrenamiento">Función de entrenamiento</a></li>
+                <li class="third-level"><a href="#funcion-de-evaluacion">Función de evaluación</a></li>
+                <li class="third-level"><a href="#sugerencias-a-tener-en-cuenta">Sugerencias a tener en cuenta</a></li>  -->
+        <li class="first-level "><a href="#configurar-las-semillas-para-reproducibilidad">Configurar las semillas para reproducibilidad</a></li>
+            <li class="second-level"><a href="#toma-de-un-unico-lote-para-el-entrenamiento">Toma de un único lote para el entrenamiento</a></li>
+                 <!--   -->
+        <li class="first-level "><a href="#se-toma-un-lote-a-partir-del-generador-que-servira-como-lote-a-sobreajustar-en-el-entrenamiento">Se toma un lote a partir del generador, que servirá como lote a sobreajustar en el entrenamiento:</a></li>
+            <li class="second-level"><a href="#modelo-y-funcion-de-entrenamiento">Modelo y función de entrenamiento</a></li>
+                 <!--   -->
+            <li class="second-level"><a href="#visualizacion-del-sobreajuste-de-un-lote">Visualización del sobreajuste de un lote</a></li>
+                 <!--   -->
+            <li class="second-level"><a href="#modelo-y-funcion-de-entrenamiento_1">Modelo y función de entrenamiento</a></li>
+                 <!--   -->
+            <li class="second-level"><a href="#visualizacion-y-comparacion-tras-el-incremento-de-parametros">Visualización y comparación tras el incremento de parámetros</a></li>
+                 <!--   -->
+            <li class="second-level"><a href="#sobreajuste">Sobreajuste</a></li>
+                 <!-- 
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas">Visualización dinámica de las pérdidas y métricas</a></li>  -->
+            <li class="second-level"><a href="#regularizacion">Regularización.</a></li>
+                 <!-- 
+                <li class="third-level"><a href="#visualizacion-del-dataset-aplicando-el-aumento-de-datos">Visualización del dataset aplicando el aumento de datos</a></li>
+                <li class="third-level"><a href="#funcion-de-entrenamiento-y-validacion-del-modelo-con-aumento-de-datos">Función de entrenamiento y validación del modelo con aumento de datos</a></li>
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas_1">Visualización dinámica de las pérdidas y métricas</a></li>
+                <li class="third-level"><a href="#funcion-de-entrenamiento-y-validacion-del-modelo-con-capas-de-abandono-en-el-modelo">Función de entrenamiento y validación del modelo con capas de abandono en el modelo</a></li>
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas_2">Visualización dinámica de las pérdidas y métricas</a></li>
+                <li class="third-level"><a href="#funcion-de-entrenamiento-y-validacion-en-base-a-un-modelo-pre-entrenado">Función de entrenamiento y validación en base a un modelo pre-entrenado</a></li>
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas_3">Visualización dinámica de las pérdidas y métricas</a></li>
+                <li class="third-level"><a href="#generacion-del-dataset-con-dimensionalidad-de-entrada-reducida">Generación del Dataset con dimensionalidad de entrada reducida</a></li>
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas_4">Visualización dinámica de las pérdidas y métricas</a></li>
+                <li class="third-level"><a href="#generacion-del-dataset-con-tamano-de-lote-reducido">Generación del Dataset con tamaño de lote reducido</a></li>
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas_5">Visualización dinámica de las pérdidas y métricas</a></li>
+                <li class="third-level"><a href="#generacion-del-modelo-con-una-performance-mayor">Generación del modelo con una performance mayor</a></li>
+                <li class="third-level"><a href="#visualizacion-dinamica-de-las-perdidas-y-metricas_6">Visualización dinámica de las pérdidas y métricas</a></li>
+                <li class="third-level"><a href="#grafico-de-visualizacion-con-la-comparacion-de-todas-las-configuraciones-vistas">Gráfico de visualización con la comparación de todas las configuraciones vistas:</a></li>  -->
+            <li class="second-level"><a href="#sintonizacion">Sintonización.</a></li>
+                 <!--   -->
+            <li class="second-level"><a href="#mejoras-finales">Mejoras finales</a></li>
+                 <!--   -->
+            <li class="second-level"><a href="#connclusiones">Connclusiones</a></li>
+                 <!--   -->
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="pipeline-para-el-entrenamiento-de-redes-neuronales">Pipeline para el entrenamiento de Redes Neuronales</h1>
+<p>El objetivo de este post es exponer un proceso especifico cuando se requiera aplicar una red neuronal para abordar un nuevo problema. Se basa en construir la red de simple a complejo, y en cada paso del camino hacer hipótesis concretas de lo que se espera que ocurra y posteriormente validarlas con un conjunto de experimentación que nos permita la detección pronta de posibles problemas en la arquitectura. Con todo ello, lo que se intenta evitar es introducir una complejidad excesiva a nuestro problema que seguramente introducirá errores o configuraciones erróneas muy difíciles o casi imposibles de detectar, ya que su red mal configurada, la mayoría de las veces entrenará sin arrojar excepciones, aunque en silencio funcionará un poco peor.</p>
+<h2 id="analisis-y-limpieza-de-los-datos">Análisis y limpieza de los Datos</h2>
+<p>El primer paso antes de empezar a crear o desarrollar la arquitectura de la red neuronal es comenzar inspeccionando a fondo sus datos. Este paso es muy crítico y por ello se debe dedicar una gran parte del tiempo total al escaneando de miles de ejemplos, entendiendo su distribución y buscando patrones. Algunas consideraciones a tener en cuenta en el análisis exploratorio y limpieza de datos serían:</p>
+<ul>
+<li>Datos duplicados, en el caso de datos estructurados pueden ser lineas del dataframe repetidas o en el caso de imágenes podrían ser copias duplicadas con o sin el mismo nombre.</li>
+<li>Etiquetas corruptas, datos faltantes o datos inconsistentes.</li>
+<li>Valores atípicos en cualquiera de las variables independientes.</li>
+<li>Búsqueda de los desequilibrios de datos y posibles sesgos en las variables independientes.</li>
+<li>Estudio que toman la variación de las variables dependientes.</li>
+<li>Reducción en la resolución de las imágenes siempre que la calidad del detalle sea la apropiada.</li>
+<li>Posible ruido en las etiquetas o incluso en alguna variable dependiente.</li>
+<li>Transformaciones de los datos para adaptar la varianza de los datos a una distribución normal.</li>
+<li>Categorización de las variables categóricas.</li>
+</ul>
+<h5 id="descarga-del-dataset-de-ejemplo">Descarga del dataset de ejemplo:</h5>
+<pre><code class="python">data_directory = &quot;dataset/&quot;
+folder_data = &quot;PetImages/&quot;
+directory = os.path.join(data_directory, folder_data)
+
+if not os.path.isdir(data_directory):
+os.mkdir(data_directory)
+!curl -o dataset/kagglecatsanddogs.zip https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_3367a.zip
+!unzip -q dataset/kagglecatsanddogs.zip -d dataset/
+
+# Forzar desbalanceo del dataset
+items_cats = [item for item in os.listdir(os.path.join(directory, &quot;Cat&quot;)) if 
+                                os.path.isfile(os.path.join(directory, &quot;Cat&quot;, item))]
+_ = [os.remove(os.path.join(directory, &quot;Cat&quot;, item)) for item in rn.choices(items_cats, k=int(len(items_cats)*0.5)) if 
+                                os.path.isfile(os.path.join(directory, &quot;Cat&quot;, item))]
+
+!ls dataset/PetImages/
+</code></pre>
+
+<pre><code>&gt;&gt;&gt; Cat  Dog
+</code></pre>
+<h5 id="filtrado-de-imagenes-corruptas">Filtrado de imagenes corruptas</h5>
+<pre><code class="python">num_skipped = 0
+for folder_name in (&quot;Cat&quot;, &quot;Dog&quot;):
+    folder_path = os.path.join(directory, folder_name)
+    for fname in os.listdir(folder_path):
+        fpath = os.path.join(folder_path, fname)
+        try:
+            fobj = open(fpath, &quot;rb&quot;)
+            is_jfif = tf.compat.as_bytes(&quot;JFIF&quot;) in fobj.peek(10)
+        finally:
+            fobj.close()
+
+        if not is_jfif:
+            num_skipped += 1
+            # Delete corrupted image
+            os.remove(fpath)
+
+print(&quot;Deleted %d images&quot; % num_skipped)
+</code></pre>
+
+<pre><code>&gt;&gt;&gt; Deleted 0 images
+</code></pre>
+<h5 id="resumen-de-los-datos-del-dataset">Resumen de los Datos del dataset</h5>
+<pre><code class="python">items_cats = [item for item in os.listdir(os.path.join(directory, &quot;Cat&quot;)) if 
+                                os.path.isfile(os.path.join(directory, &quot;Cat&quot;, item))]
+items_dogs = [item for item in os.listdir(os.path.join(directory, &quot;Dog&quot;)) if 
+                                os.path.isfile(os.path.join(directory, &quot;Dog&quot;, item))]
+
+print(f'Numero de imagenes correspondientes a gatos: {len(items_cats)}')
+print(f'Numero de imagenes correspondientes a perros: {len(items_dogs)}')
+print(f'Relación de desbalanceo gatos/perros: {len(items_cats)/len(items_dogs)}')
+</code></pre>
+
+<pre><code>&gt;&gt;&gt; Numero de imagenes correspondientes a gatos: 7163
+&gt;&gt;&gt; Numero de imagenes correspondientes a perros: 11670
+&gt;&gt;&gt; Relación de desbalanceo gatos/perros: 0.613796058269066
+</code></pre>
+<h5 id="generacion-del-dataset">Generación del Dataset</h5>
+<pre><code class="python">image_size = (204, 204)
+batch_size = 32
+num_classes = 2
+
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    directory,
+    validation_split=0.2,
+    subset=&quot;training&quot;,
+    seed=seed,
+    image_size=image_size,
+    batch_size=batch_size,
+)
+val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    directory,
+    validation_split=0.2,
+    subset=&quot;validation&quot;,
+    seed=seed,
+    image_size=image_size,
+    batch_size=batch_size,
+)
+
+train_ds = train_ds.prefetch(buffer_size=batch_size)
+val_ds = val_ds.prefetch(buffer_size=batch_size)
+</code></pre>
+
+<pre><code>&gt;&gt;&gt; Found 18831 files belonging to 2 classes.
+&gt;&gt;&gt; Using 15065 files for training.
+&gt;&gt;&gt; Found 18831 files belonging to 2 classes.
+&gt;&gt;&gt; Using 3766 files for validation.
+</code></pre>
+<h5 id="visualizacion-de-los-datos">Visualización de los datos</h5>
+<pre><code class="python">plt.figure(figsize=(10, 6))
+for images, labels in train_ds.take(1):
+    for i in range(8):
+        ax = plt.subplot(2, 4, i + 1)
+        plt.imshow(images[i].numpy().astype(&quot;uint8&quot;))
+        plt.title(&quot;Cat&quot; if int(labels[i]) == 0 else &quot;Dog&quot;)
+        plt.axis(&quot;off&quot;)
+</code></pre>
+
+<p><img alt="png" src="../output_15_0.png" /></p>
+<h2 id="configuracion-de-la-arquitectura-end-to-end">Configuración de la arquitectura end-to-end.</h2>
+<p>Una vez entendidos los datos, el siguiente paso es configurar la función de entrenamiento y evaluación, que nos permita ejecutarla y ganar confianza en su inferencia a través de una serie de experimentos. en esta etapa, es muy recomendable elegir un modelo simple, el cual no ha sido modificado de ninguna manera, por ejemplo, un clasificador lineal o un red convolucional simple. Con ello, el objetivo será entrenarlo, visualizar las pérdidas y las métricas para cada epoch, predecir resultados en base a la inferencia del modelo y realizar una serie de experimentos de ablación con hipótesis explícitas en cada experimento realizado.</p>
+<h5 id="generacion-red-convolucional-simple">Generación red convolucional simple</h5>
+<pre><code class="python">def make_model(input_shape, num_classes):
+    inputs = keras.Input(shape=input_shape)
+    # Entry block
+    x = layers.experimental.preprocessing.Rescaling(1.0 / 255)(inputs)
+    x = layers.Conv2D(32, 3, strides=3, padding=&quot;same&quot;)(x)
+    x = layers.Activation(&quot;relu&quot;)(x)
+    x = layers.MaxPool2D(pool_size=2)(x)
+    x = layers.Conv2D(32, 3, strides=3, padding=&quot;same&quot;)(x)
+    x = layers.Activation(&quot;relu&quot;)(x)
+    x = layers.GlobalAveragePooling2D()(x)
+
+    if num_classes == 2:
+        activation = &quot;sigmoid&quot;
+        units = 1
+    else:
+        activation = &quot;softmax&quot;
+        units = num_classes
+
+    initializer_weights = tf.keras.initializers.GlorotUniform()
+    initializer_bias = tf.constant_initializer(0.6)
+    outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                        kernel_initializer = initializer_weights,
+                        activation = activation)(x)
+    return keras.Model(inputs, outputs)
+
+
+model = make_model(input_shape=image_size + (3,), num_classes=num_classes)
+model.summary()
+</code></pre>
+
+<pre><code>&gt;&gt;&gt; Model: "functional_1"
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; Layer (type)                 Output Shape              Param #   
+&gt;&gt;&gt; =================================================================
+&gt;&gt;&gt; input_1 (InputLayer)         [(None, 224, 224, 3)]     0         
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; rescaling (Rescaling)        (None, 224, 224, 3)       0         
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; conv2d (Conv2D)              (None, 75, 75, 32)        896       
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; activation (Activation)      (None, 75, 75, 32)        0         
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; max_pooling2d (MaxPooling2D) (None, 37, 37, 32)        0         
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; conv2d_1 (Conv2D)            (None, 13, 13, 32)        9248      
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; activation_1 (Activation)    (None, 13, 13, 32)        0         
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; global_average_pooling2d (Gl (None, 32)                0         
+&gt;&gt;&gt; _________________________________________________________________
+&gt;&gt;&gt; dense (Dense)                (None, 1)                 33        
+&gt;&gt;&gt; =================================================================
+&gt;&gt;&gt; Total params: 10,177
+&gt;&gt;&gt; Trainable params: 10,177
+&gt;&gt;&gt; Non-trainable params: 0
+&gt;&gt;&gt; _________________________________________________________________
+</code></pre>
+<h5 id="funcion-de-entrenamiento">Función de entrenamiento</h5>
+<pre><code class="python">EPOCHS = 5 #Parámetro general en el Pipeline de entrenamiento
+
+model.compile(
+    optimizer=keras.optimizers.Adam(1e-3),
+    loss=&quot;binary_crossentropy&quot;,
+    metrics=[&quot;accuracy&quot;],
+)
+history = model.fit(
+    train_ds, epochs=EPOCHS, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)
+</code></pre>
+
+<pre><code>&gt;&gt;&gt; Epoch 1/5
+&gt;&gt;&gt; 471/471 [==============================] - 49s 104ms/step - loss: 0.6647 - accuracy: 0.6117 - 
+&gt;&gt;&gt; val_loss: 0.6313 - val_accuracy: 0.6283
+&gt;&gt;&gt; Epoch 2/5
+&gt;&gt;&gt; 471/471 [==============================] - 48s 101ms/step - loss: 0.6322 - accuracy: 0.6346 - 
+&gt;&gt;&gt; val_loss: 0.6266 - val_accuracy: 0.6306
+&gt;&gt;&gt; ...
+&gt;&gt;&gt; ...
+&gt;&gt;&gt; Epoch 98/100
+&gt;&gt;&gt; 472/472 [==============================] - 43s 92ms/step - loss: 0.4487 - accuracy: 0.7835 - 
+&gt;&gt;&gt; val_loss: 0.4857 - val_accuracy: 0.7596
+&gt;&gt;&gt; Epoch 99/100
+&gt;&gt;&gt; 472/472 [==============================] - 43s 91ms/step - loss: 0.4510 - accuracy: 0.7892 - 
+&gt;&gt;&gt; val_loss: 0.4920 - val_accuracy: 0.7537
+&gt;&gt;&gt; Epoch 100/100
+&gt;&gt;&gt; 472/472 [==============================] - 43s 91ms/step - loss: 0.4509 - accuracy: 0.7881 - 
+&gt;&gt;&gt; val_loss: 0.5077 - val_accuracy: 0.7503
+</code></pre>
+<h5 id="funcion-de-evaluacion">Función de evaluación</h5>
+<pre><code class="python">def plot_history(history):
+&quot;&quot;&quot;
+    Generación del gráfico de Visualización de métricas
+    y perdidas para cada epochs del entrenamiento-validación.
+&quot;&quot;&quot;
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs = range(1, len(acc)+1, 1)
+fig, axs = plt.subplots(1, 2,figsize=(12, 5))
+
+axs[0].plot(epochs, acc, 'r--', label='Training acc')
+axs[0].plot(epochs, val_acc,  'b', label='Validation acc')
+axs[0].set_title('Training and validation accuracy')
+axs[0].set_ylabel('acc')
+axs[0].set_xlabel('epochs')
+axs[0].legend()
+
+axs[1].plot(epochs, loss, 'r--' )
+axs[1].plot(epochs, val_loss , 'b' )
+axs[1].set_title ('Training and validation loss')
+axs[1].set_ylabel('loss')
+axs[1].set_xlabel('epochs')
+
+fig.tight_layout()
+plt.show()
+
+plot_history(history)
+</code></pre>
+
+<p><img alt="png" src="../output_19_0.png" /></p>
+<h4 id="sugerencias-a-tener-en-cuenta">Sugerencias a tener en cuenta</h4>
+<p>Algunas sugerencias en este paso son:</p>
+<ul>
+<li>
+<p><strong>Semilla aleatoria fija:</strong> esto garantiza la repetibilidad de sus experimentos, eliminando el factor de variación y permitiendo que pueda comparar los distintos experimentos.</p>
+<p>```python</p>
+<h1 id="configurar-las-semillas-para-reproducibilidad">Configurar las semillas para reproducibilidad</h1>
+<p>os.environ['PYTHONHASHSEED'] = '0'
+seed = 99
+np.random.seed(seed)
+rn.seed(seed)
+tf.random.set_seed(seed)
+```</p>
+</li>
+<li>
+<p><strong>Simplificar:</strong> En esta etapa es muy importante simplificar el pipeline de entrenamiento, es decir, deshabilitar cualquier método de regulación añadido como por ejemplo podría ser el aumento de datos, que pueda inducir algún tipo de error en la red.</p>
+</li>
+<li>
+<p><strong>Visualización del tensor de entrada de la red:</strong> Muy importante preparar en su código la visualización del tensor de entrada a la red. Con ello se asegura la consistencia de los datos de entrada y ayuda a la detección temprana de fallos en el aumento de datos o en la codificación de estos.</p>
+<p><code>python
+train_ds.as_numpy_iterator().next()[0].shape</code>
+    &gt;&gt;&gt; (32, 224, 224, 3)</p>
+</li>
+<li>
+<p><strong>Agregar datos significativos en la evaluación:</strong> Evaluar la pérdida de evaluación en todo el conjunto de test.</p>
+<p><code>python
+history = model.fit(
+    train_ds, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds,
+    validation_steps = total_imag_val // batch_size # con generador: validation_steps = len(val_ds) 
+)</code></p>
+</li>
+<li>
+<p><strong>Visualización de la dinámica de predicción:</strong> Se pretende visualizar las predicciones del modelo en un lote de prueba fijo durante la inferencia. Esta dinámica de cómo varían las predicciones permiten intuir de buena manera el progreso de entrenamiento.Si se observa gran variabilidad y fluctuaciones demasiado agresivas, esto es síntoma de inestabilidades en el proceso de entrenamiento.</p>
+</li>
+<li>
+<p><strong>Verificar la pérdida en la inicialización:</strong> Verificar que su pérdida comience en un valor de inicialización correcto. 
+El objetivo de la inicialización de peso es evitar que las salidas de activación de la capa exploten o desaparezcan durante el proceso de <em>forward pass</em> de la red neuronal profunda. Si ocurre cualquiera de los dos, los gradientes de pérdida serán demasiado grandes o demasiado pequeños para fluir hacia atrás de manera beneficiosa, y la red tardará más en converger, si es que es capaz de hacerlo.
+Para conseguir una convengencia sustancialmente más rápida y una mayor precisión en los resultados, la mejor forma es inicializar los pesos con un inicializador de pesos <em>GlorotNormal</em> o <em>GlorotUniform</em>.</p>
+<p><code>python
+initializer_weights = tf.keras.initializers.GlorotUniform()
+outputs = layers.Dense(units, kernel_initializer = initializer_weights, activation = activation)(x)</code></p>
+</li>
+<li>
+<p><strong>Inicialización de los pesos:</strong> Inicialización de los pesos de las capas finales de manera correcta. Por ejemplo, si se tiene un conjunto de datos desequilibrado a relación 1:5, se debe asignar el sesgo en los logits de modo que la red sea capaz de predecir la probabilidad de 0.25 en la inicialización. Esta inicialización ayudará a la red a converger de manera más rápida y eliminará las primeras iteraciones del entrenamiento, donde la red esta aprendiendo el sesgo del conjunto de datos.</p>
+<p><code>python
+print(f'Relación en el desbalanceo gatos/perros: {len(items_cats)/len(items_dogs)}')</code></p>
+<pre><code>&gt;&gt;&gt; Relación de desbalanceo gatos/perros: 0.613796058269066
+</code></pre>
+<blockquote>
+<p>En este caso la relación de desequilibrio entre las dos categorias es de un <em>0.6</em> aproximadamente, por ello:</p>
+</blockquote>
+<p><code>python
+initializer_weights = tf.keras.initializers.GlorotUniform()
+initializer_bias = tf.constant_initializer(0.6)
+outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                        kernel_initializer = initializer_weights,
+                        activation = activation)(x)</code></p>
+</li>
+<li>
+<p><strong>Razonamiento humano:</strong> Monitorización de las métricas que no sean pérdidas y que aporten más valor al "ojo humano", como por ejemplo la precisión siempre que sea posible. Con ello se puede hacer una trazabilidad de los resultados para cada iteración que sean interpretables desde el programador.</p>
+<p><code>python
+model.compile(
+    optimizer=keras.optimizers.Adam(1e-3),
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)</code></p>
+</li>
+<li>
+<p><strong>Independencia de los datos de entrada:</strong> Esto se basa en hacer la prueba de entrenar la red neuronal en base a todas las entradas a cero. En este caso la red debería funcionar peor que con los datos reales del conjunto de entrenamiento. Si es así, se está validando que la red es capaz de extraer información de las entradas.
+En vez de aplicar todas las entradas a zero, se puede establecer una capa de abandono en la entrada, con una tasa/frecuencia de abandono muy alta, con lo que conseguira que practicamente todos los elementos del tensor de entrada sean igual a zero.
+    ```python
+    def make_model_zeros(input_shape, num_classes):</p>
+<pre><code>inputs = keras.Input(shape=input_shape)
+x = tf.keras.layers.Dropout(0.99)(inputs) #Aplica Dropout a la entrada.
+
+x = layers.Conv2D(32, 3, strides=3, padding="same")(x)
+x = layers.Activation("relu")(x)
+x = layers.MaxPool2D(pool_size=2)(x)
+x = layers.Conv2D(32, 3, strides=3, padding="same")(x)
+x = layers.Activation("relu")(x)
+x = layers.GlobalAveragePooling2D()(x)
+
+if num_classes == 2:
+    activation = "sigmoid"
+    units = 1
+else:
+    activation = "softmax"
+    units = num_classes
+
+initializer_weights = tf.keras.initializers.GlorotUniform()
+initializer_bias = tf.constant_initializer(0.6)
+outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                    kernel_initializer = initializer_weights,
+                    activation = activation)(x)
+return keras.Model(inputs, outputs)
+</code></pre>
+<p>model_zeros = make_model_zeros(input_shape=image_size + (3,), num_classes=num_classes)</p>
+<p>model_zeros.compile(
+    optimizer=keras.optimizers.Adam(1e-3),
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_zeros = model_zeros.fit(
+    train_ds, epochs=EPOCHS, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)
+```
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 49s 103ms/step - loss: 21.5472 - accuracy: 0.5310 - 
+    &gt;&gt;&gt; val_loss: 0.6932 - val_accuracy: 0.6190
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 47s 101ms/step - loss: 1.6109 - accuracy: 0.5280 - 
+    &gt;&gt;&gt; val_loss: 0.6682 - val_accuracy: 0.6190
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 471/471 [==============================] - 48s 102ms/step - loss: 0.8016 - accuracy: 0.5523 - 
+    &gt;&gt;&gt; val_loss: 0.6656 - val_accuracy: 0.6190
+    &gt;&gt;&gt; ...
+    &gt;&gt;&gt; ...
+    &gt;&gt;&gt; Epoch 98/100
+    &gt;&gt;&gt; 472/472 [==============================] - 43s 92ms/step - loss: 0.6625 - accuracy: 0.6141 - 
+    &gt;&gt;&gt; val_loss: 0.6700 - val_accuracy: 0.6194
+    &gt;&gt;&gt; Epoch 99/100
+    &gt;&gt;&gt; 472/472 [==============================] - 44s 93ms/step - loss: 0.6636 - accuracy: 0.6146 - 
+    &gt;&gt;&gt; val_loss: 0.6702 - val_accuracy: 0.6194
+    &gt;&gt;&gt; Epoch 100/100
+    &gt;&gt;&gt; 472/472 [==============================] - 43s 92ms/step - loss: 0.6644 - accuracy: 0.6131 - 
+    &gt;&gt;&gt; val_loss: 0.6709 - val_accuracy: 0.6194</p>
+<p><code>python
+plot_history(history_zeros)</code></p>
+<p><img alt="png" src="../output_34_0.png" /></p>
+<blockquote>
+<p>Como se puede observar, la red con una capa de abandono en la entrada no es capaz de converger y por ello no aprende. Con ello, ya que la red base si que convergue, se valida que la red es capaz de extraer información de las entradas y como consecuencia se puede decir que el modelo es dependiente de las entradas, es decir, es capaz de extraer información de las imagenes de entrada.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Sobreajuste en un lote:</strong> Se basa en el sobreajuste de un lote de unos poquísimos ejemplos, con el objetivo de alcanzar la pérdida más baja posible. Para ello se puede aumentar las capacidades de la red, aumentando el número de capas o filtros. El objetivo es asegurar que tanto la etiqueta como la predicción coinciden al alcanzar la pérdida mínima, si no es así, es síntoma de que hay algún error en alguna parte.</p>
+<h6 id="toma-de-un-unico-lote-para-el-entrenamiento"><em>Toma de un único lote para el entrenamiento</em></h6>
+<p>```python</p>
+<h1 id="se-toma-un-lote-a-partir-del-generador-que-servira-como-lote-a-sobreajustar-en-el-entrenamiento">Se toma un lote a partir del generador, que servirá como lote a sobreajustar en el entrenamiento:</h1>
+<p>X_train, y_train = train_ds.as_numpy_iterator().next()
+X_train.shape, y_train.shape
+```
+    &gt;&gt;&gt; ((32, 224, 224, 3), (32,))</p>
+<h6 id="modelo-y-funcion-de-entrenamiento">Modelo y función de entrenamiento</h6>
+<p>```python
+def make_model_overfiting(input_shape, num_classes):</p>
+<pre><code>inputs = keras.Input(shape=input_shape)
+
+x = layers.Conv2D(32, 3, strides=3, padding="same")(inputs)
+x = layers.Activation("relu")(x)
+x = layers.MaxPool2D(pool_size=2)(x)
+x = layers.Conv2D(32, 3, strides=3, padding="same")(x)
+x = layers.Activation("relu")(x)
+x = layers.GlobalAveragePooling2D()(x)
+
+if num_classes == 2:
+    activation = "sigmoid"
+    units = 1
+else:
+    activation = "softmax"
+    units = num_classes
+
+initializer_weights = tf.keras.initializers.GlorotUniform()
+initializer_bias = tf.constant_initializer(0.6)
+outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                    kernel_initializer = initializer_weights,
+                    activation = activation)(x)
+return keras.Model(inputs, outputs)
+</code></pre>
+<p>model_overfiting = make_model_overfiting(input_shape=image_size + (3,), num_classes=num_classes)</p>
+<p>model_overfiting.compile(pip install matplotlib</p>
+<pre><code>optimizer=keras.optimizers.Adam(1e-3),
+loss="binary_crossentropy",
+metrics=["accuracy"],
+</code></pre>
+<p>)</p>
+<p>history_overfiting = model_overfiting.fit(
+    X_train, y_train, validation_data=val_ds.take(1),
+    validation_steps = len(val_ds.take(1)),
+    epochs=240) #Se eligue un número alto de epochs para poder llegar al sobreajuste.
+```</p>
+<pre><code>&gt;&gt;&gt; Epoch 1/240
+&gt;&gt;&gt; 1/1 [==============================] - 1s 1s/step - loss: 13.0985 - accuracy: 0.5312 - 
+&gt;&gt;&gt; val_loss: 3.7622 - val_accuracy: 0.4062
+&gt;&gt;&gt; Epoch 2/240
+&gt;&gt;&gt; 1/1 [==============================] - 1s 712ms/step - loss: 2.9530 - accuracy: 0.5625 - 
+&gt;&gt;&gt; val_loss: 8.5338 - val_accuracy: 0.3750
+&gt;&gt;&gt; Epoch 3/240
+&gt;&gt;&gt; 1/1 [==============================] - 1s 690ms/step - loss: 6.6881 - accuracy: 0.4688 - 
+&gt;&gt;&gt; val_loss: 7.3043 - val_accuracy: 0.5625
+&gt;&gt;&gt; ...
+&gt;&gt;&gt; ...
+&gt;&gt;&gt; Epoch 239/240
+&gt;&gt;&gt; 1/1 [==============================] - 1s 692ms/step - loss: 0.0461 - accuracy: 1.0000 - 
+&gt;&gt;&gt; val_loss: 5.1547 - val_accuracy: 0.5625
+&gt;&gt;&gt; Epoch 240/240
+&gt;&gt;&gt; 1/1 [==============================] - 1s 708ms/step - loss: 0.0456 - accuracy: 1.0000 - 
+&gt;&gt;&gt; val_loss: 2.3423 - val_accuracy: 0.5312
+</code></pre>
+<h6 id="visualizacion-del-sobreajuste-de-un-lote">Visualización del sobreajuste de un lote</h6>
+<p>```python
+acc = history_overfiting.history['accuracy']
+loss = history_overfiting.history['loss']</p>
+<p>epochs = range(1, len(acc)+1, 1)
+fig, axs = plt.subplots(2, 1,figsize=(8, 6))</p>
+<p>axs[0].plot(epochs, acc, 'r--', label='Training acc')
+axs[0].set_title('Training accuracy')
+axs[0].set_ylabel('acc')
+axs[0].set_xlabel('epochs')
+axs[0].legend()
+axs[1].plot(epochs, loss, 'r--' )
+axs[1].set_title ('Training  loss')
+axs[1].set_ylabel('loss')
+axs[1].set_xlabel('epochs')
+axs[0].legend()</p>
+<p>fig.tight_layout()
+plt.show()
+```</p>
+</li>
+</ul>
+<p><img alt="png" src="../output_39_0.png" /></p>
+<ul>
+<li>
+<p><strong>Disminución de la pérdida en el entrenamiento:</strong> Hasta ahora se estaba trabajando con un modelo simple y liviano, con pocos parámetros y que permite verificar el correcto funcionamiento de la red. Por ello, ahora se procede a aumentar la capacidad del modelo solo un poco, y seguidamente verificar si realmente la pérdida en el entrenamiento ha bajado como se esperaba.</p>
+<h6 id="modelo-y-funcion-de-entrenamiento_1">Modelo y función de entrenamiento</h6>
+<p>```python
+def make_model_inc_params(input_shape, num_classes):
+    inputs = keras.Input(shape=input_shape)</p>
+<pre><code>x = layers.experimental.preprocessing.Rescaling(1.0 / 255)(inputs)
+x = layers.Conv2D(128, 3, strides=3, padding="same")(x)
+x = layers.Activation("relu")(x)
+x = layers.MaxPool2D(pool_size=2)(x)
+x = layers.Conv2D(128, 3, strides=3, padding="same")(x)
+x = layers.Activation("relu")(x)
+x = layers.GlobalAveragePooling2D()(x)
+
+if num_classes == 2:
+    activation = "sigmoid"
+    units = 1
+else:
+    activation = "softmax"
+    units = num_classes
+
+initializer_weights = tf.keras.initializers.GlorotUniform()
+initializer_bias = tf.constant_initializer(0.6)
+outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                    kernel_initializer = initializer_weights,
+                    activation = activation)(x)
+return keras.Model(inputs, outputs)
+</code></pre>
+<p>model_inc_params = make_model_inc_params(input_shape=image_size + (3,), num_classes=num_classes)</p>
+<p>model_inc_params.compile(
+    optimizer=keras.optimizers.Adam(1e-3),
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_inc_params = model_inc_params.fit(
+    train_ds, epochs=EPOCHS, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)
+```
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 52s 109ms/step - loss: 0.6631 - accuracy: 0.6173 - 
+    &gt;&gt;&gt; val_loss: 0.6573 - val_accuracy: 0.6259
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 50s 107ms/step - loss: 0.6448 - accuracy: 0.6249 - 
+    &gt;&gt;&gt; val_loss: 0.6292 - val_accuracy: 0.6322
+    &gt;&gt;&gt; ...
+    &gt;&gt;&gt; ...
+    &gt;&gt;&gt; Epoch 98/100
+    &gt;&gt;&gt; 472/472 [==============================] - 47s 99ms/step - loss: 0.3319 - accuracy: 0.8548 - 
+    &gt;&gt;&gt; val_loss: 0.5061 - val_accuracy: 0.7670
+    &gt;&gt;&gt; Epoch 99/100
+    &gt;&gt;&gt; 472/472 [==============================] - 47s 99ms/step - loss: 0.3201 - accuracy: 0.8613 - 
+    &gt;&gt;&gt; val_loss: 0.5571 - val_accuracy: 0.7542
+    &gt;&gt;&gt; Epoch 100/100
+    &gt;&gt;&gt; 472/472 [==============================] - 47s 100ms/step - loss: 0.3297 - accuracy: 0.8578 - 
+    &gt;&gt;&gt; val_loss: 0.5596 - val_accuracy: 0.7545</p>
+<h6 id="visualizacion-y-comparacion-tras-el-incremento-de-parametros">Visualización y comparación tras el incremento de parámetros</h6>
+<p>```python
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+loss = history.history['loss']
+val_loss = history.history['val_loss']</p>
+<p>acc_aument_params = history_inc_params.history['accuracy']
+val_acc_aument_params = history_inc_params.history['val_accuracy']
+loss_aument_params = history_inc_params.history['loss']
+val_loss_aument_params = history_inc_params.history['val_loss']</p>
+<p>epochs = range(1, len(acc)+1, 1)
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))</p>
+<p>axs[0].plot(epochs, acc, 'r--', label='Training acc')
+axs[0].plot(epochs, val_acc,  'r', label='Validation acc')
+axs[0].plot(epochs, acc_aument_params, 'b--', label='Training acc +params')
+axs[0].plot(epochs, val_acc_aument_params,  'b', label='Validation acc +params')
+axs[0].set_title('Training and validation accuracy')
+axs[0].set_ylabel('acc')
+axs[0].set_xlabel('epochs')
+axs[0].legend()</p>
+<p>axs[1].plot(epochs, loss, 'r--' )
+axs[1].plot(epochs, val_loss , 'r' )
+axs[1].plot(epochs, loss_aument_params, 'b--' )
+axs[1].plot(epochs, val_loss_aument_params , 'b' )
+axs[1].set_title ('Training and validation loss')
+axs[1].set_ylabel('loss')
+axs[1].set_xlabel('epochs')</p>
+<p>fig.tight_layout()
+plt.show()
+```</p>
+</li>
+</ul>
+<p><img alt="png" src="../output_42_0.png" /></p>
+<ul>
+<li><strong>Generalización o estandarización del código:</strong> Antes de generalizar una funcionalidad relativamente general desde cero que permita adaptarse a varios casos, se debería desarrollar una función muy específica para cada caso y asegurar que funcione correctamente, para posteriormente codificar la generalización de esta.</li>
+</ul>
+<h2 id="sobreajuste">Sobreajuste</h2>
+<p>Antes de empezar con esta etapa, se debería tener una buena comprensión del conjunto de datos y un proceso de entrenamiento e inferencia funcionando correctamente. Con ello el modelo es fácilmente reproducible y ofrece garantías en cuanto al cálculo de las métricas adoptadas.</p>
+<p>El enfoque para conseguir un buen modelo se basa en dos etapas:</p>
+<ul>
+<li>Obtener un modelo lo suficientemente grande como para que pueda ser adaptable en base a la pérdida en el proceso de entrenamiento.</li>
+<li>Posteriormente regularizar el modelo para mejorar la pérdida de validación renunciando a una parte de la pérdida del proceso de entrenamiento.</li>
+</ul>
+<p>Algunos procedimientos a tener en cuenta serían:</p>
+<ul>
+<li>
+<p><strong>Elección del modelo:</strong> Conseguir una buena pérdida en el entrenamiento está relacionado con la elección de una arquitectura adecuada para los datos de origen. Por ello, no se debe sobredimensionar en exceso la red, sobretodo en las primeras etapas del proyecto. Una buena práctica es informarse sobre trabajos anteriores en papers que guarden similitud con el proyecto, con ello en las primeras etapas del proyecto es muy aconsejable copiar o adaptar de la mejor forma posible la arquitectura para lograr un buen rendimiento. Por ejemplo, si el proyecto se basa en la clasificación de imágenes, una buena práctica sería adaptar una arquitectura conocida como el ResNet-50 o Xception reducida en las primeras fases del proyecto. Más tarde se permitirá indagar con arquitecturas más personalizables, pero sólo si se es capaz de superar esta etapa.</p>
+<p>```python
+def make_model_Xception(input_shape, num_classes, augment=True, Dropout=True,
+                        sizes = [128, 256, 512, 728]):
+    inputs = keras.Input(shape=input_shape)
+    # Image augmentation block
+    if augment:
+    x = data_augmentation(inputs)
+    else:
+    x = inputs</p>
+<pre><code># Entry block
+x = layers.experimental.preprocessing.Rescaling(1.0 / 255)(x)
+x = layers.Conv2D(32, 3, strides=2, padding="same")(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+
+x = layers.Conv2D(64, 3, padding="same")(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+
+previous_block_activation = x  # Set aside residual
+
+for size in sizes:
+    x = layers.Activation("relu")(x)
+    x = layers.SeparableConv2D(size, 3, padding="same")(x)
+    x = layers.BatchNormalization()(x)
+
+    x = layers.Activation("relu")(x)
+    x = layers.SeparableConv2D(size, 3, padding="same")(x)
+    x = layers.BatchNormalization()(x)
+
+    x = layers.MaxPooling2D(3, strides=2, padding="same")(x)
+
+    # Project residual
+    residual = layers.Conv2D(size, 1, strides=2, padding="same")(
+        previous_block_activation
+    )
+    x = layers.add([x, residual])  # Add back residual
+    previous_block_activation = x  # Set aside next residual
+
+x = layers.SeparableConv2D(1024, 3, padding="same")(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+
+x = layers.GlobalAveragePooling2D()(x)
+if num_classes == 2:
+    activation = "sigmoid"
+    units = 1
+else:
+    activation = "softmax"
+    units = num_classes
+
+if Dropout:
+x = layers.Dropout(0.5)(x)
+outputs = layers.Dense(units, activation=activation)(x)
+
+initializer_weights = tf.keras.initializers.GlorotUniform()
+initializer_bias = tf.constant_initializer(0.6)
+outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                    kernel_initializer = initializer_weights,
+                    activation = activation)(x)
+
+return keras.Model(inputs, outputs)
+</code></pre>
+<p>model_Xception = make_model_Xception(input_shape=image_size + (3,), num_classes=2, 
+                                    augment=False, Dropout=False)
+```</p>
+</li>
+<li>
+<p><strong>Elección del Optimizador:</strong> En las primeras etapas del proyecto, es muy aconsejable utilizar un optimizador conocido y eficiente como es el "Adam" con una tasa de aprendizaje de 3e-4. La experiencia nos dice que Adam es mucho más indulgente con los hiperparametros, aún habiendo establecido una mala tasa de aprendizaje.</p>
+<p><code>python
+optimizer = keras.optimizers.Adam(3e-4)</code></p>
+</li>
+<li>
+<p><strong>Adicción de complejidad:</strong> Para cada cambio en el modelo que induzca a añadir mayor complejidad, es recomendable añadirlas de una en una, realizando las pruebas pertinentes y asegurándose de que se ha podido conseguir un aumento en el rendimiento sujeto a las expectativas.</p>
+</li>
+<li>
+<p><strong>Disminución de la tasa de aprendizaje:</strong> En las primeras etapas del proyecto se recomienda deshabilitar la disminución de la tasa de aprendizaje por completo, es decir, establecer una tasa de aprendizaje constante para todo el bucle de entrenamiento. Esto es debido a que los parámetros por defectos de estas funciones están optimizado para un tipo de redes concretes, que lo más seguro es que no se adapten favorablemente al modelo del proyecto, haciendo que la tasa de aprendizaje decaiga demasiado rápido, dificultando que el modelo converja. Posteriormente en las fases finales del proyecto ya se sintonizara estos parámetros de reducción de la tasa de aprendizaje para conseguir alcanzar el mínimo valor de pérdida de entrenamiento.</p>
+<p>```python
+callbacks = [
+    # keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2,
+    #                                   patience=5, min_lr=0.001)
+]</p>
+<p>model_Xception.compile(
+    optimizer=optimizer,
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_Xception = model_Xception.fit(
+    train_ds, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)
+```</p>
+<pre><code>&gt;&gt;&gt; Epoch 1/5
+&gt;&gt;&gt; 471/471 [==============================] - 338s 717ms/step - loss: 0.5725 - accuracy: 0.6951 - 
+&gt;&gt;&gt; val_loss: 0.6565 - val_accuracy: 0.6190
+&gt;&gt;&gt; Epoch 2/5
+&gt;&gt;&gt; 471/471 [==============================] - 330s 701ms/step - loss: 0.3821 - accuracy: 0.8303 - 
+&gt;&gt;&gt; val_loss: 0.4466 - val_accuracy: 0.7804
+&gt;&gt;&gt; Epoch 3/5
+&gt;&gt;&gt; 471/471 [==============================] - 330s 701ms/step - loss: 0.2708 - accuracy: 0.8896 - 
+&gt;&gt;&gt; val_loss: 0.2541 - val_accuracy: 0.8930
+&gt;&gt;&gt; Epoch 4/5
+&gt;&gt;&gt; 471/471 [==============================] - 331s 702ms/step - loss: 0.1772 - accuracy: 0.9306 - 
+&gt;&gt;&gt; val_loss: 0.2540 - val_accuracy: 0.8911
+&gt;&gt;&gt; Epoch 5/5
+&gt;&gt;&gt; 471/471 [==============================] - 331s 702ms/step - loss: 0.1140 - accuracy: 0.9590 - 
+&gt;&gt;&gt; val_loss: 0.5719 - val_accuracy: 0.7791
+</code></pre>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_Xception)</code></p>
+</li>
+</ul>
+<p><img alt="png" src="../output_54_0.png" /></p>
+<h2 id="regularizacion">Regularización.</h2>
+<p>En esta fase, se tiene un modelo adaptado al conjunto de datos de entrenamiento. Con ello, es el momento de regularizar y obtener cierta precisión del conjunto de validación renunciando a parte de la precisión en el entrenamiento. Para ello el procedimiento a seguir se basa en:</p>
+<ul>
+<li>
+<p><strong>Obtención de más datos:</strong> La mejor forma de regularizar el modelo en cualquier entorno práctico es agregar más datos de entrenamiento reales. El error más habitual es consumir un gran número de recursos y tiempo en tratar de exprimir el jugo a un pequeño conjunto de datos cuando en su lugar podría dedicar estos mismos recursos a la recolección de nuevos datos. Por ello, podemos concluir que la agregación de nuevos datos es la forma más eficiente de mejorar el rendimiento de una red neuronal bien configurada.</p>
+</li>
+<li>
+<p><strong>Aumento de los datos:</strong> Aplicar técnicas de aumento de datos, basadas en aumentar el conjunto de datos con datos medio falsos. Por ejemplo, en imágenes se utilizan las rotaciones, las variaciones de color, los cortes parciales de imágenes, adición de ruido, entre muchas otras técnicas.</p>
+<p><code>python
+data_augmentation = tf.keras.Sequential(
+    [
+        layers.experimental.preprocessing.RandomFlip("horizontal"),
+        layers.experimental.preprocessing.RandomRotation(0.1),
+        layers.experimental.preprocessing.RandomZoom(height_factor=0.1),
+        layers.experimental.preprocessing.RandomCrop(height=image_size[0]-20, 
+                                                    width=image_size[1]-20)
+    ]
+)</code></p>
+<blockquote>
+<p>Transformaciones de los datos </p>
+</blockquote>
+<p><code>python
+inputs = keras.Input(shape=input_shape)
+x = data_augmentation(inputs)
+x = layers.experimental.preprocessing.Rescaling(1./255)(x)
+...  # Rest of the model</code></p>
+<blockquote>
+<p>Con esta opción, el aumento de datos se realizará sincrónicamente con el resto de la ejecución del modelo, lo que significa que se beneficiará de la aceleración de la GPU.</p>
+</blockquote>
+<h6 id="visualizacion-del-dataset-aplicando-el-aumento-de-datos">Visualización del dataset aplicando el aumento de datos</h6>
+<p><code>python
+plt.figure(figsize=(10, 6))
+for images, labels in train_ds.take(1):
+    for i in range(8):
+        ax = plt.subplot(2, 4, i + 1)
+        augmented_images = data_augmentation(images)
+        plt.imshow(augmented_images[i].numpy().astype("uint8"))
+        plt.title("Cat" if int(labels[i]) == 0 else "Dog")
+        plt.axis("off")</code></p>
+<p><img alt="png" src="../output_61_0.png" /></p>
+<h6 id="funcion-de-entrenamiento-y-validacion-del-modelo-con-aumento-de-datos">Función de entrenamiento y validación del modelo con aumento de datos</h6>
+<p><code>python
+model_Xception_augment = make_model_Xception(input_shape=image_size + (3,), num_classes=2, 
+                                            augment=True, Dropout=False)
+model_Xception_augment.compile(
+    optimizer=optimizer,
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_Xception_augment = model_Xception_augment.fit(
+    train_ds, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)</code>
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 306s 650ms/step - loss: 0.6630 - accuracy: 0.6333 - 
+    &gt;&gt;&gt; val_loss: 0.9102 - val_accuracy: 0.3810
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 299s 634ms/step - loss: 0.5456 - accuracy: 0.7252 - 
+    &gt;&gt;&gt; val_loss: 0.6306 - val_accuracy: 0.6646
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 471/471 [==============================] - 299s 634ms/step - loss: 0.4259 - accuracy: 0.8038 - 
+    &gt;&gt;&gt; val_loss: 0.3697 - val_accuracy: 0.8351
+    &gt;&gt;&gt; Epoch 4/5
+    &gt;&gt;&gt; 471/471 [==============================] - 298s 633ms/step - loss: 0.3273 - accuracy: 0.8587 - 
+    &gt;&gt;&gt; val_loss: 0.2724 - val_accuracy: 0.8826
+    &gt;&gt;&gt; Epoch 5/5
+    &gt;&gt;&gt; 471/471 [==============================] - 299s 634ms/step - loss: 0.2736 - accuracy: 0.8820 - 
+    &gt;&gt;&gt; val_loss: 0.3086 - val_accuracy: 0.8582</p>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas_1">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_Xception_augment)</code>
+<img alt="png" src="../output_63_0.png" /></p>
+</li>
+<li>
+<p><strong>Añadir pérdidas de información entre capas:</strong> Utilizar capas de abandono (Dropouts) para ConvNets. Siempre utilizando con moderación ya que un exceso puede generar problemas con la normalización por lotes.</p>
+<h6 id="funcion-de-entrenamiento-y-validacion-del-modelo-con-capas-de-abandono-en-el-modelo">Función de entrenamiento y validación del modelo con capas de abandono en el modelo</h6>
+<p><code>python
+model_Xception_dropout_without_augment = make_model_Xception(input_shape=image_size + (3,), num_classes=2, 
+                                            augment=False, Dropout=True)
+model_Xception_dropout_without_augment.compile(
+    optimizer=optimizer,
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_Xception_dropout_without_augment = model_Xception_augment.fit(
+    train_ds, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)</code>
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 296s 627ms/step - loss: 0.2277 - accuracy: 0.9030 - 
+    &gt;&gt;&gt; val_loss: 0.6406 - val_accuracy: 0.7156
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 296s 629ms/step - loss: 0.2078 - accuracy: 0.9151 - 
+    &gt;&gt;&gt; val_loss: 0.2071 - val_accuracy: 0.9164
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 471/471 [==============================] - 296s 629ms/step - loss: 0.1850 - accuracy: 0.9247 - 
+    &gt;&gt;&gt; val_loss: 0.1692 - val_accuracy: 0.9318
+    &gt;&gt;&gt; Epoch 4/5
+    &gt;&gt;&gt; 471/471 [==============================] - 296s 627ms/step - loss: 0.1730 - accuracy: 0.9302 - 
+    &gt;&gt;&gt; val_loss: 0.1871 - val_accuracy: 0.9241
+    &gt;&gt;&gt; Epoch 5/5
+    &gt;&gt;&gt; 471/471 [==============================] - 295s 627ms/step - loss: 0.1615 - accuracy: 0.9334 - 
+    &gt;&gt;&gt; val_loss: 0.1497 - val_accuracy: 0.9379</p>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas_2">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_Xception_dropout_without_augment)</code>
+<img alt="png" src="../output_66_0.png" /></p>
+</li>
+<li>
+<p><strong>Aumento de datos creativos:</strong> Se están abriendo nuevas líneas de desarrollo en la expansión de los conjuntos de datos, donde se aplican técnicas de aumento de datos donde dicho dato es totalmente falso (no real). Este tipo de datos se obtienen por ejemplo entrenando redes GANs adaptadas al dominio de los datos, mediante usos de simulaciones, aleatorización de dominios, etc.</p>
+</li>
+<li>
+<p><strong>Pre-entrenamiento:</strong> No dejar la oportunidad de utilizar una red pre-entrenada para intentar encontrar solución al problema.</p>
+<h6 id="funcion-de-entrenamiento-y-validacion-en-base-a-un-modelo-pre-entrenado">Función de entrenamiento y validación en base a un modelo pre-entrenado</h6>
+<p>```python
+pretrained_model = efn.EfficientNetB0(weights='imagenet', 
+                                            input_shape=(*image_size, 3),
+                                            include_top=False)
+pretrained_model.trainable = False</p>
+<p>def make_model_pretrained(input_shape, num_classes, augment=True, Dropout=True):
+    inputs = keras.Input(shape=input_shape)
+    # Image augmentation block
+    if augment:
+    x = data_augmentation(inputs)
+    else:
+    x = inputs
+    # Entry block
+    X = pretrained_model(x),
+    x = layers.GlobalAveragePooling2D()(x)
+    x = keras.layers.Dense(256, activation='relu')(x)
+    x = keras.layers.Dense(64, activation='relu')(x)</p>
+<pre><code>if num_classes == 2:
+    activation = "sigmoid"
+    units = 1
+else:
+    activation = "softmax"
+    units = num_classes
+if Dropout:
+x = layers.Dropout(0.5)(x)
+
+initializer_weights = tf.keras.initializers.GlorotUniform()
+initializer_bias = tf.constant_initializer(0.6)
+outputs = layers.Dense(units, bias_initializer = initializer_bias, 
+                    kernel_initializer = initializer_weights,
+                    activation = activation)(x)
+return keras.Model(inputs, outputs)
+</code></pre>
+<p>model_pretrained = make_model_pretrained(input_shape=image_size + (3,), num_classes=2, 
+                                            augment=True, Dropout=False)</p>
+<p>def unfreeze_model(model):
+    # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
+    for layer in model.layers[-20:]:
+        if not isinstance(layer, layers.BatchNormalization):
+            layer.trainable = True
+    model.compile(
+        optimizer=optimizer, loss="binary_crossentropy", metrics=["accuracy"]
+    )</p>
+<p>unfreeze_model(model_pretrained)</p>
+<p>history_pretrained = model_pretrained.fit(
+    train_ds, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)
+```
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 50s 107ms/step - loss: 1.6228 - accuracy: 0.5647 - 
+    &gt;&gt;&gt; val_loss: 0.6702 - val_accuracy: 0.5616
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 49s 105ms/step - loss: 0.6800 - accuracy: 0.5885 - 
+    &gt;&gt;&gt; val_loss: 0.8605 - val_accuracy: 0.6190
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 471/471 [==============================] - 49s 105ms/step - loss: 0.6907 - accuracy: 0.5736 - 
+    &gt;&gt;&gt; val_loss: 0.6569 - val_accuracy: 0.6184
+    &gt;&gt;&gt; Epoch 4/5
+    &gt;&gt;&gt; 471/471 [==============================] - 49s 105ms/step - loss: 0.6878 - accuracy: 0.5796 - 
+    &gt;&gt;&gt; val_loss: 0.6502 - val_accuracy: 0.6213
+    &gt;&gt;&gt; Epoch 5/5
+    &gt;&gt;&gt; 471/471 [==============================] - 49s 105ms/step - loss: 0.6805 - accuracy: 0.5885 - 
+    &gt;&gt;&gt; val_loss: 0.6534 - val_accuracy: 0.6200</p>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas_3">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_pretrained)</code>
+<img alt="png" src="../output_70_0.png" /></p>
+</li>
+<li>
+<p><strong>Reducción dimensionalidad de los datos de entrada:</strong> Se debe intentar reducir el tamaño de entrada de los datos al modelo, siempre y cuando se tenga completo conocimiento del dominio de datos. Un indicador para realizar esta reducción de dimensionalidad, es si los detalles de bajo nivel no son muy importantes y se puede prescindir de ellos reduciendo la dimensionalidad.</p>
+<h6 id="generacion-del-dataset-con-dimensionalidad-de-entrada-reducida">Generación del Dataset con dimensionalidad de entrada reducida</h6>
+<p>```python
+IMAGE_SIZE_REDUCE = (120, 120)</p>
+<p>train_ds_1 = tf.keras.preprocessing.image_dataset_from_directory(
+    directory,
+    validation_split=0.2,
+    subset="training",
+    seed=seed,
+    image_size=IMAGE_SIZE_REDUCE,
+    batch_size=batch_size,
+)
+val_ds_1 = tf.keras.preprocessing.image_dataset_from_directory(
+    directory,
+    validation_split=0.2,
+    subset="validation",
+    seed=seed,
+    image_size=IMAGE_SIZE_REDUCE,
+    batch_size=batch_size,
+)</p>
+<p>train_ds_1 = train_ds_1.prefetch(buffer_size=batch_size)
+val_ds_1 = val_ds_1.prefetch(buffer_size=batch_size)</p>
+<p>model_Xception_augment_dropout_image_reduce = make_model_Xception(input_shape=IMAGE_SIZE_REDUCE + (3,),
+                                                                  num_classes=2, 
+                                                                  augment=False, Dropout=True)
+model_Xception_augment_dropout_image_reduce.compile(
+    optimizer=optimizer,
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_Xception_augment_dropout_image_reduce = model_Xception_augment_dropout_image_reduce.fit(
+    train_ds_1, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds_1,
+    validation_steps = len(val_ds_1)
+)
+```
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 101s 214ms/step - loss: 0.6293 - accuracy: 0.6651 - 
+    &gt;&gt;&gt; val_loss: 0.7964 - val_accuracy: 0.3834
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 96s 204ms/step - loss: 0.4061 - accuracy: 0.8171 - 
+    &gt;&gt;&gt; val_loss: 0.7718 - val_accuracy: 0.5866
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 471/471 [==============================] - 96s 203ms/step - loss: 0.2921 - accuracy: 0.8739 - 
+    &gt;&gt;&gt; val_loss: 0.9705 - val_accuracy: 0.5659
+    &gt;&gt;&gt; Epoch 4/5
+    &gt;&gt;&gt; 471/471 [==============================] - 95s 202ms/step - loss: 0.1989 - accuracy: 0.9181 - 
+    &gt;&gt;&gt; val_loss: 0.3594 - val_accuracy: 0.8537
+    &gt;&gt;&gt; Epoch 5/5
+    &gt;&gt;&gt; 471/471 [==============================] - 95s 201ms/step - loss: 0.1228 - accuracy: 0.9506 - 
+    &gt;&gt;&gt; val_loss: 1.0463 - val_accuracy: 0.6888</p>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas_4">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_Xception_augment_dropout_image_reduce)</code>
+<img alt="png" src="../output_73_0.png" /></p>
+</li>
+<li>
+<p><strong>Disminución del tamaño de lote:</strong> La reducción del tamaño de lote (Batchsize) corresponde en cierta medida a una regularización más fuerte.</p>
+<h6 id="generacion-del-dataset-con-tamano-de-lote-reducido">Generación del Dataset con tamaño de lote reducido</h6>
+<p>```python
+BATCH_SIZE_REDUCE = 16</p>
+<p>train_ds_1 = tf.keras.preprocessing.image_dataset_from_directory(
+    directory,
+    validation_split=0.2,
+    subset="training",
+    seed=seed,
+    image_size=image_size,
+    batch_size=BATCH_SIZE_REDUCE,
+)
+val_ds_1 = tf.keras.preprocessing.image_dataset_from_directory(
+    directory,
+    validation_split=0.2,
+    subset="validation",
+    seed=seed,
+    image_size=image_size,
+    batch_size=BATCH_SIZE_REDUCE,
+)</p>
+<p>train_ds_1 = train_ds_1.prefetch(buffer_size=batch_size)
+val_ds_1 = val_ds_1.prefetch(buffer_size=batch_size)</p>
+<p>model_Xception_augment_dropout_image_reduce_batch_size = make_model_Xception(input_shape=image_size + (3,), num_classes=2, 
+                                            augment=False, Dropout=True)
+model_Xception_augment_dropout_image_reduce_batch_size.compile(
+    optimizer=optimizer,
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_Xception_dropout_image_reduce_batchsize = model_Xception_augment_dropout_image_reduce_batch_size.fit(
+    train_ds_1, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds_1,
+    validation_steps = len(val_ds_1)
+)
+```
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 942/942 [==============================] - 350s 371ms/step - loss: 0.6761 - accuracy: 0.6258 - 
+    &gt;&gt;&gt; val_loss: 0.5501 - val_accuracy: 0.7215
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 942/942 [==============================] - 346s 367ms/step - loss: 0.5009 - accuracy: 0.7564 - 
+    &gt;&gt;&gt; val_loss: 0.4033 - val_accuracy: 0.8205
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 942/942 [==============================] - 345s 366ms/step - loss: 0.3535 - accuracy: 0.8489 - 
+    &gt;&gt;&gt; val_loss: 0.3670 - val_accuracy: 0.8168
+    &gt;&gt;&gt; Epoch 4/5
+    &gt;&gt;&gt; 942/942 [==============================] - 345s 367ms/step - loss: 0.2370 - accuracy: 0.9052 - 
+    &gt;&gt;&gt; val_loss: 0.2650 - val_accuracy: 0.8898
+    &gt;&gt;&gt; Epoch 5/5
+    &gt;&gt;&gt; 942/942 [==============================] - 344s 365ms/step - loss: 0.1765 - accuracy: 0.9326 - 
+    &gt;&gt;&gt; val_loss: 0.2058 - val_accuracy: 0.9126</p>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas_5">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_Xception_dropout_image_reduce_batchsize)</code>
+<img alt="png" src="../output_76_0.png" /></p>
+</li>
+<li>
+<p><strong>Detección temprana:</strong> Detección del proceso de entrenamiento en función de su pérdida de validación para obtener el modelo justo cuando esté en el punto de sobreajuste.
+    <code>python
+    callbacks = [
+        keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2,
+                                        patience=5, min_lr=0.001),
+        keras.callbacks.EarlyStopping(monitor='val_loss', patience=5,
+                                    restore_best_weights=True),
+    ]</code></p>
+</li>
+<li>
+<p><strong>Pruebas con modelos más grandes:</strong> Puede utilizar modelos con más parámetros junto con la detección temprana, ya que muchas veces estos modelos sobredimensionados consiguen mejor rendimiento de "parada temprana".</p>
+<h6 id="generacion-del-modelo-con-una-performance-mayor">Generación del modelo con una performance mayor</h6>
+<p>```python
+model_big = make_model_Xception(input_shape=image_size + (3,), num_classes=2, 
+                                augment=True, Dropout=True,
+                                sizes = [128, 128, 256, 256, 512, 512, 728, 728, 1024])
+model_big.compile(
+    optimizer=optimizer,
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
+history_model_big = model_big.fit(
+    train_ds, epochs=EPOCHS, callbacks=callbacks, validation_data=val_ds,
+    validation_steps = len(val_ds)
+)          </p>
+<p>```
+    &gt;&gt;&gt; Epoch 1/5
+    &gt;&gt;&gt; 471/471 [==============================] - 252s 534ms/step - loss: 0.7830 - accuracy: 0.5869 - 
+    &gt;&gt;&gt; val_loss: 0.6550 - val_accuracy: 0.6190
+    &gt;&gt;&gt; Epoch 2/5
+    &gt;&gt;&gt; 471/471 [==============================] - 243s 516ms/step - loss: 0.6215 - accuracy: 0.6658 - 
+    &gt;&gt;&gt; val_loss: 0.5032 - val_accuracy: 0.7499
+    &gt;&gt;&gt; Epoch 3/5
+    &gt;&gt;&gt; 471/471 [==============================] - 243s 517ms/step - loss: 0.5238 - accuracy: 0.7387 - 
+    &gt;&gt;&gt; val_loss: 0.5738 - val_accuracy: 0.7384
+    &gt;&gt;&gt; Epoch 4/5
+    &gt;&gt;&gt; 471/471 [==============================] - 243s 516ms/step - loss: 0.4359 - accuracy: 0.7987 - 
+    &gt;&gt;&gt; val_loss: 0.4106 - val_accuracy: 0.8163
+    &gt;&gt;&gt; Epoch 5/5
+    &gt;&gt;&gt; 471/471 [==============================] - 244s 517ms/step - loss: 0.3561 - accuracy: 0.8426 - 
+    &gt;&gt;&gt; val_loss: 0.4146 - val_accuracy: 0.8083</p>
+<h6 id="visualizacion-dinamica-de-las-perdidas-y-metricas_6">Visualización dinámica de las pérdidas y métricas</h6>
+<p><code>python
+plot_history(history_model_big)</code>
+<img alt="png" src="../output_80_1.png" /></p>
+</li>
+</ul>
+<p>A continuación se expone el estudio de ablación realizado a partir de todas las iteraciones realizadas:</p>
+<pre><code class="python">resumen = [
+        history, 
+        history_inc_params, 
+        history_model_big, 
+        history_pretrained, 
+        history_Xception, 
+        history_Xception_augment_dropout_image_reduce, 
+        history_Xception_dropout_image_reduce_batchsize,
+        history_zeros
+        ]
+
+nombres = [
+        &quot;basic&quot;, 
+        &quot;inc_params&quot;, 
+        &quot;model_big&quot;, 
+        &quot;pretrained&quot;, 
+        &quot;Xception&quot;, 
+        &quot;Xception_augment_dropout_image_reduce&quot;, 
+        &quot;Xception_dropout_image_reduce_batchsize&quot;,
+        &quot;zeros&quot;
+        ]
+</code></pre>
+
+<h6 id="grafico-de-visualizacion-con-la-comparacion-de-todas-las-configuraciones-vistas">Gráfico de visualización con la comparación de todas las configuraciones vistas:</h6>
+<pre><code class="python">fig, axs = plt.subplots(4, 1,figsize=(12, 20))
+
+for hist, name in zip(resumen, nombres):
+
+acc = hist.history['accuracy']
+val_acc = hist.history['val_accuracy']
+loss = hist.history['loss']
+val_loss = hist.history['val_loss']
+
+epochs = range(1, len(acc)+1, 1)
+
+axs[0].plot(epochs, acc, label=f'{name}')
+axs[0].set_title('Training accuracy')
+axs[0].set_ylabel('acc')
+axs[0].set_xlabel('epochs')
+axs[0].legend(loc = 'lower right')
+
+axs[1].plot(epochs, loss)
+axs[1].set_title ('Training loss')
+axs[1].set_ylabel('loss')
+axs[1].set_xlabel('epochs')
+
+axs[2].plot(epochs, val_acc, label=f'{name}')
+axs[2].set_title('Validation accuracy')
+axs[2].set_ylabel('acc')
+axs[2].set_xlabel('epochs')
+axs[2].legend(loc = 'lower right')
+
+axs[3].plot(epochs, val_loss)
+axs[3].set_title ('Validation loss')
+axs[3].set_ylabel('loss')
+axs[3].set_xlabel('epochs')
+
+
+fig.tight_layout()
+plt.show()
+
+</code></pre>
+
+<p><img alt="png" src="../output_83_0.png" /></p>
+<p>Finalmente, como extra para conseguir una confianza adicional de que su red es un clasificador razonable, se pueden visualizar los pesos de la primera capa de la red para asegurarse que tenga bordes suaves con sentido. Es decir, si en los filtros de la primera capa aparece ruido, entonces algo podría estar apagado o indicar problemas en las activaciones.</p>
+<h2 id="sintonizacion">Sintonización.</h2>
+<p>Una vez se tiene una arquitectura del modelo estable y con gran adaptabilidad al conjunto de datos se puede proceder a la sintonización o búsqueda de los hiperparámetros más eficientes. Para ello se puede proceder de la siguiente manera:</p>
+<ul>
+<li>
+<p><strong>Búsqueda aleatoria sobre cuadrícula:</strong> Para ajustar simultáneamente múltiples hiperparámetros, es muy recomendable utilizar la búsqueda aleatoria frente a la búsqueda de cuadrícula. Esto se debe a que las redes neuronales muchas veces son más sensibles a algunos parámetros que a otros.</p>
+</li>
+<li>
+<p><strong>Optimización de hiperparámetros:</strong> Existe un gran y amplio abanico de opciones para la optimización de hiperparámetros bayesianas, que ofrecen mejoras significativas y que son opciones a tener en cuenta siempre que se desee realizar este proceso de optimización de hiperparámetros.</p>
+</li>
+</ul>
+<h2 id="mejoras-finales">Mejoras finales</h2>
+<p>Una vez encontradas las mejores arquitecturas e hiperparámetros para el modelo, aún se puede usar algunas técnicas para aumentar el rendimiento del modelo:</p>
+<ul>
+<li>
+<p><strong>Ensembling:</strong> Se pueden adaptar como un ensembling varias arquitecturas diferentes que hayan completado todas las etapas anteriores, con ello puede garantizar el aumento de precisión de la red.</p>
+</li>
+<li>
+<p><strong>Detección temprana del entrenamiento</strong>: Una detección pronta del entrenamiento cuando la pérdida por validación parece estar estabilizandose y sin tener la firme seguridad de haber entrado en overfitting, sólo puede ocasionar una pérdida de rendimiento notable en el modelo.</p>
+</li>
+</ul>
+<h2 id="connclusiones">Connclusiones</h2>
+<p>Una vez llegado a este punto, se puede decir que se ha adquirido un conocimiento profundo de la tecnología, el conjunto de datos y el problema. Se ha configurad una infraestructura de entrenamiento y validación adquiriendo una gran confianza en la precisión del modelo a través de las mejoras de rendimiento comentadas.</p></div>
+        
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright &copy; 2018-2022 <a href="https://www.linkedin.com/in/jaisenbe">Jaime Sendra</a><br></small>
+        
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
+
+    <script src="../../../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '../../../..';
+    </script>
+    <script data-main="../../../../mkdocs/js/search.js" src="../../../../mkdocs/js/require.js"></script>
+    <script src="../../../../js/base.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="../../../../mathjaxhelper.js"></script>
+    <script src="../../../../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>
