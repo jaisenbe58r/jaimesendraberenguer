@@ -9,31 +9,31 @@ repo_url: https://github.com/jaisenbe58r/jaimesendraberenguer
 repo_name: GitHub
 edit_uri: docs/
 
-theme:
-    name: null
-    custom_dir: 'custom_theme/'
+# theme:
+#     name: null
+#     custom_dir: 'custom_theme/'
 
-#include_search: true # not necessary for this theme
-docs_dir: docs/
+# #include_search: true # not necessary for this theme
+# docs_dir: docs/
 
 
-markdown_extensions:
-  - tables
-  - fenced_code
-  - mdx_math:
-      enable_dollar_delimiter: True #for use of inline $..$
-extra_javascript:
-  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
-  - mathjaxhelper.js
-extra_css:
-  - cinder/css/base.css
-  - cinder/css/bootstrap-custom.css
-  - cinder/css/bootstrap-custom.min.css
-  - cinder/css/cinder.css
-  - cinder/css/font-awesome-4.0.3.css
-  - cinder/css/highlight.css
+# markdown_extensions:
+#   - tables
+#   - fenced_code
+#   - mdx_math:
+#       enable_dollar_delimiter: True #for use of inline $..$
+# extra_javascript:
+#   - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+#   - mathjaxhelper.js
+# extra_css:
+#   - cinder/css/base.css
+#   - cinder/css/bootstrap-custom.css
+#   - cinder/css/bootstrap-custom.min.css
+#   - cinder/css/cinder.css
+#   - cinder/css/font-awesome-4.0.3.css
+#   - cinder/css/highlight.css
 
-copyright: Copyright &copy; 2018-2022 <a href="https://www.linkedin.com/in/jaisenbe">Jaime Sendra</a>
+# copyright: Copyright &copy; 2018-2022 <a href="https://www.linkedin.com/in/jaisenbe">Jaime Sendra</a>
 
 
 nav:
