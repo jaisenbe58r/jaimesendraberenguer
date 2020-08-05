@@ -1,0 +1,109 @@
+# https://www.mkdocs.org/user-guide/deploying-your-docs/
+
+site_name: jaimesendraberenguer
+site_url: https://jaisenbe58r.github.io/jaimesendraberenguer/
+site_author: Jaime Sendra Berenguer
+site_description: A library consisting of useful tools and extensions for the day-to-day data science tasks.
+
+
+repo_url: https://github.com/jaisenbe58r/MLearner
+repo_name: GitHub
+edit_uri: docs/sources/user_guide/
+
+
+
+#include_search: true # not necessary for this theme
+docs_dir: sources
+
+
+theme:
+    name: null
+    custom_dir: 'custom_theme/'
+
+markdown_extensions:
+  - tables
+  - fenced_code
+  - mdx_math:
+      enable_dollar_delimiter: True #for use of inline $..$
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+  - mathjaxhelper.js
+extra_css:
+  - cinder/css/base.css
+  - cinder/css/bootstrap-custom.css
+  - cinder/css/bootstrap-custom.min.css
+  - cinder/css/cinder.css
+  - cinder/css/font-awesome-4.0.3.css
+  - cinder/css/highlight.css
+
+copyright: Copyright &copy; 2018-2022 <a href="https://www.linkedin.com/in/jaisenbe">Jaime Sendra</a>
+google_analytics: ['UA-163860068-1', 'jaisenbe58r.github.io/MLearner/']
+
+nav:
+- Home: index.md
+- User Guide:
+  - USER_GUIDE_INDEX.md
+  - load:
+    - user_guide/load/DataLoad.md
+  - data:
+    - user_guide/data/wine_data.md
+    - user_guide/data/data_normal.md
+    - user_guide/data/data_gamma.md
+    - user_guide/data/data_uniform.md
+    - user_guide/data/create_dataset.md
+  - preprocessing:
+    - user_guide/preprocessing/MeanCenterer.md
+    - user_guide/preprocessing/minmax_scaling.md
+    - user_guide/preprocessing/FeatureDropper.md
+    - user_guide/preprocessing/FillNaTransformer_median.md
+    - user_guide/preprocessing/FillNaTransformer_mean.md
+    - user_guide/preprocessing/FillNaTransformer_idmax.md
+    - user_guide/preprocessing/FillNaTransformer_any.md
+    - user_guide/preprocessing/FillNaTransformer_all.md
+    - user_guide/preprocessing/FillNaTransformer_value.md
+    - user_guide/preprocessing/FillNaTransformer_backward.md
+    - user_guide/preprocessing/FillNaTransformer_forward.md
+    - user_guide/preprocessing/FixSkewness.md
+    - user_guide/preprocessing/OneHotEncoder.md
+    - user_guide/preprocessing/DropOutliers.md
+    - user_guide/preprocessing/ExtractCategories.md
+    - user_guide/preprocessing/ReplaceMulticlass.md
+    - user_guide/preprocessing/ReplaceTransformer.md
+    - user_guide/preprocessing/DataCleaner.md
+    - user_guide/preprocessing/DataAnalyst.md
+  - feature selections:
+    - user_guide/feature_selections/FeatureSelection.md
+  - models:
+    - user_guide/models/modelXGBoost.md
+    - user_guide/models/modelLightBoost.md
+    - user_guide/models/modelCatBoost.md
+  - clasifier:
+    - user_guide/clasifier/PipelineClasificators.md
+    - user_guide/clasifier/TrainingUtilities.md
+  - training:
+    - user_guide/training/Training.md
+  - evaluation:
+    - user_guide/evaluation/EvaluationModels
+  # - externals:
+  #   - user_guide/externals/NotFittedError.md
+  - utils:
+    - user_guide/utils/ParamsManager.md
+- API:
+  - api_subpackages/mlearner.data.md
+  - api_subpackages/mlearner.preprocessing.md
+  - api_subpackages/mlearner.externals.md
+  - api_subpackages/mlearner.load.md
+  - api_subpackages/mlearner.classifier.md
+  - api_subpackages/mlearner.feature_selection.md
+  - api_subpackages/mlearner.models.md
+  - api_subpackages/mlearner.training.md
+  - api_subpackages/mlearner.utils.md
+
+- Installation: installation.md
+- About:
+  - Release Notes: CHANGELOG.md
+  - How To Contribute: CONTRIBUTING.md
+  - Contributors: contributors.md
+  - License: license.md
+  - Citing mlearner: cite.md
+  - Discuss: discuss.md
